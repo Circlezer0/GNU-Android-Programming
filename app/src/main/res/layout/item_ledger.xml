@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:padding="8dp"
+    android:background="?android:attr/selectableItemBackground">
+
+    <!-- 날짜: 고정 폭 80dp -->
+    <TextView
+        android:id="@+id/tvDate"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="03일"
+        android:textSize="16sp" />
+
+    <!-- 수익/지출: weight 1, 중앙 정렬 -->
+    <TextView
+        android:id="@+id/tvType"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="수익"
+        android:textSize="16sp" />
+
+    <!-- 카테고리: weight 1, 중앙 정렬 -->
+    <TextView
+        android:id="@+id/tvCategory"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="카테고리"
+        android:textSize="16sp" />
+
+    <!-- 금액: weight 2, 오른쪽 정렬 -->
+    <TextView
+        android:id="@+id/tvAmount"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:gravity="end|center_vertical"
+        android:text="0"
+        android:textSize="16sp" />
+
+    <!-- 결제방식: weight 1, 중앙 정렬 -->
+    <TextView
+        android:id="@+id/tvPaymentMethod"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="결제방식"
+        android:textSize="16sp" />
+
+    <!-- 비고: weight 1, 중앙 정렬 -->
+    <TextView
+        android:id="@+id/tvMemo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="center"
+        android:text="비고"
+        android:textSize="16sp" />
+</LinearLayout>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- 리스트 상단 헤더 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#FCE4EC"
+        android:padding="8dp">
+
+        <!-- 날짜 헤더: 고정 폭 -->
+        <TextView
+            android:id="@+id/tvListHeaderDate"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="날짜"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <!-- 수익/지출 헤더: 나머지 열 중 하나 (weight 1) -->
+        <TextView
+            android:id="@+id/tvListHeaderType"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="수익/\n지출"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <!-- 카테고리 헤더: weight 1 -->
+        <TextView
+            android:id="@+id/tvListHeaderCategory"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="카테\n고리"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <!-- 금액 헤더: weight 2 (가장 넓게) -->
+        <TextView
+            android:id="@+id/tvListHeaderAmount"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="center"
+            android:text="금액"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <!-- 결제방식 헤더: weight 1 -->
+        <TextView
+            android:id="@+id/tvListHeaderPaymentMethod"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="결제\n방식"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <!-- 비고 헤더: weight 1 -->
+        <TextView
+            android:id="@+id/tvListHeaderMemo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="비고"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <!-- 리스트 항목을 위한 RecyclerView (ID는 recyclerViewList 유지) -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>
