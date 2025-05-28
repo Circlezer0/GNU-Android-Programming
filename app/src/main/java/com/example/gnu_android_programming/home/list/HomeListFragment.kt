@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.ListFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gnu_android_programming.R
@@ -14,7 +13,6 @@ import com.example.gnu_android_programming.database.LedgerDBHelper
 import java.util.Calendar
 
 class HomeListFragment : Fragment() {
-    // 기존 멤버 변수들...
     private lateinit var ledgerDBHelper: LedgerDBHelper
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: LedgerAdapter
