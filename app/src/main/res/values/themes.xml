@@ -1,0 +1,26 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.GNUAndroidProgramming" parent="Theme.Material3.DayNight.NoActionBar">
+        <!-- 전체 창 배경은 흰색 -->
+        <item name="android:windowBackground">@android:color/white</item>
+        <!-- 카드, 달력 등 Surface 영역도 흰색 -->
+        <item name="colorSurface">@android:color/white</item>
+
+        <!-- 꽃집에 어울리는 색상으로 Primary, PrimaryVariant, Secondary, Accent 설정 -->
+        <item name="colorPrimary">#F48FB1</item>          <!-- 부드러운 핑크 -->
+        <item name="colorPrimaryVariant">#F06292</item>   <!-- 좀 더 진한 핑크 -->
+        <item name="colorSecondary">#D893C7</item>          <!-- 연보라 (Secondary) -->
+        <item name="colorAccent">#D81B60</item>             <!-- 강렬한 핑크 -->
+
+        <!-- 상태바(Status Bar) 색상 (API 21 이상) -->
+        <item name="android:statusBarColor">#F06292</item>
+
+        <!-- 필요에 따라 네비게이션바 색상도 지정 가능 -->
+        <!-- <item name="android:navigationBarColor">#F48FB1</item> -->
+
+        <!-- MaterialComponents에서 사용하는 추가 속성 -->
+        <item name="materialCalendarStyle">@style/Widget.MaterialComponents.MaterialCalendar</item>
+    </style>
+
+    <style name="Theme.GNUAndroidProgramming" parent="Base.Theme.GNUAndroidProgramming" />
+</resources>

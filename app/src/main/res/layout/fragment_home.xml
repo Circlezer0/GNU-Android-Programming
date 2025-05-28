@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <!-- 공통 헤더 -->
+    <LinearLayout
+        android:id="@+id/headerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#FFFFFF"
+        android:padding="16dp">
+
+        <!-- 오른쪽 끝에 설정 버튼 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end">
+            <ImageButton
+                android:id="@+id/btnSettings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:contentDescription="설정"
+                android:src="@drawable/ic_settings"/>
+        </LinearLayout>
+
+        <!-- 월 변경 버튼과 현재 년월 표시 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+            <Button
+                android:id="@+id/btnPrevMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="이전달" />
+            <TextView
+                android:id="@+id/tvMonthYear"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="2025-04"
+                android:textSize="30sp"
+                android:gravity="center" />
+            <Button
+                android:id="@+id/btnNextMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="다음달" />
+        </LinearLayout>
+
+        <!-- 월간 통계 (수익, 지출, 순수익) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="8dp"
+            android:gravity="center_horizontal">
+
+            <!-- 수익 항목 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tvLabelIncome"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="수익:"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/tvIncomeValue"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textSize="18sp"/>
+            </LinearLayout>
+            <!-- 지출 항목 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp">
+                <TextView
+                    android:id="@+id/tvLabelExpense"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="지출:"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/tvExpenseValue"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textSize="18sp"/>
+            </LinearLayout>
+            <!-- 순수익 항목 -->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="4dp">
+                <TextView
+                    android:id="@+id/tvLabelNet"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:text="순수익:"
+                    android:textSize="18sp"/>
+                <TextView
+                    android:id="@+id/tvNetValue"
+                    android:layout_width="200dp"
+                    android:layout_height="wrap_content"
+                    android:text="0"
+                    android:textSize="18sp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 보기 모드 전환 버튼 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="8dp">
+            <Button
+                android:id="@+id/btnCalendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="달력 모드" />
+            <Button
+                android:id="@+id/btnList"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="리스트 모드"
+                android:layout_marginStart="16dp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <!-- Fragment 컨테이너: 남은 공간을 모두 차지 -->
+    <FrameLayout
+        android:id="@+id/fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- 기록 추가 FAB -->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabAddEntry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_input_add"
+            app:backgroundTint="#F0C3D8"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"/>
+    </FrameLayout>
+</LinearLayout>
