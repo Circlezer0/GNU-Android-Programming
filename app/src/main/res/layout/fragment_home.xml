@@ -15,20 +15,6 @@
         android:background="#FFFFFF"
         android:padding="16dp">
 
-        <!-- 오른쪽 끝에 설정 버튼 -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="end">
-            <ImageButton
-                android:id="@+id/btnSettings"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="?attr/selectableItemBackgroundBorderless"
-                android:contentDescription="설정"
-                android:src="@drawable/ic_settings"/>
-        </LinearLayout>
 
         <!-- 월 변경 버튼과 현재 년월 표시 -->
         <LinearLayout

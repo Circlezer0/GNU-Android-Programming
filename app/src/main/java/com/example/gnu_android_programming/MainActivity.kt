@@ -1,14 +1,12 @@
 package com.example.gnu_android_programming
 
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.example.gnu_android_programming.home.HomeFragment
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity() {
@@ -39,9 +37,9 @@ class MainActivity : AppCompatActivity() {
         // 네비게이션 메뉴 클릭 리스너
         navigationView.setNavigationItemSelectedListener { menuItem ->
             val fragment = when (menuItem.itemId) {
-                R.id.nav_home -> HomeFragment()
-                R.id.nav_reservation -> ReservationFragment()
-                R.id.nav_setting -> SettingFragment()
+                R.id.nav_home -> HomeFragment() // 가계부 페이지
+                R.id.nav_reservation -> ReservationFragment() // 예약 페이지
+                R.id.nav_setting -> SettingFragment() // 설정 페이지
                 else -> null
             }
             fragment?.let {
