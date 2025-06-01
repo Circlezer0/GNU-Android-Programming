@@ -83,9 +83,14 @@ class HomeFragment : Fragment() {
         }
 
         // FloatingActionButton 클릭 시 AddEntryActivity로 이동
-//        fabAddEntry.setOnClickListener {
-//            startActivity(Intent(requireContext(), AddEntryActivity::class.java))
-//        }
+        fabAddEntry.setOnClickListener {
+            // AddEntryFragment 를 불러와서 fragment_container에 교체하고,
+            // 뒤로 가기 버튼을 눌렀을 때 이전 Fragment로 돌아갈 수 있게 BackStack에 추가
+            parentFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, AddEntryFragment())
+                .addToBackStack(null)
+                .commit()
+        }
 
         updateMonthDisplay()
 
