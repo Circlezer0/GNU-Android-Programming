@@ -53,7 +53,7 @@ class HomeListFragment : Fragment() {
 
     private fun loadEntries() {
         // 1. DB에서 해당 월의 모든 기록을 읽어옴
-        val rawEntries = mutableListOf<LedgerEntry>()
+        val rawEntries = mutableListOf<LedgerData>()
         val db = ledgerDBHelper.readableDatabase
         val selection = if (!yearMonth.isNullOrEmpty()) "${LedgerDBHelper.COL_DATE} LIKE ?" else null
         val selectionArgs = if (!yearMonth.isNullOrEmpty()) arrayOf("$yearMonth%") else null
@@ -74,7 +74,7 @@ class HomeListFragment : Fragment() {
             val amount = cursor.getInt(cursor.getColumnIndexOrThrow(LedgerDBHelper.COL_AMOUNT))
             val paymentMethod = cursor.getString(cursor.getColumnIndexOrThrow(LedgerDBHelper.COL_PAYMENT_METHOD))
             val memo = cursor.getString(cursor.getColumnIndexOrThrow(LedgerDBHelper.COL_MEMO))
-            rawEntries.add(LedgerEntry(id, date, incomeExpense, category, amount, paymentMethod, memo))
+            rawEntries.add(LedgerData(id, date, incomeExpense, category, amount, paymentMethod, memo))
         }
         cursor.close()
 
@@ -89,7 +89,7 @@ class HomeListFragment : Fragment() {
         val maxDay = cal.getActualMaximum(Calendar.DAY_OF_MONTH)
 
         // 4. 날짜별로 그룹화 (key: day(Int), value: LedgerEntry 리스트)
-        val grouped = mutableMapOf<Int, MutableList<LedgerEntry>>()
+        val grouped = mutableMapOf<Int, MutableList<LedgerData>>()
         for (entry in rawEntries) {
             // entry.date: "yyyy-MM-dd"
             val day = entry.date.split("-").getOrNull(2)?.toIntOrNull()
@@ -99,13 +99,13 @@ class HomeListFragment : Fragment() {
         }
 
         // 5. 새 리스트 생성: 1일부터 maxDay까지
-        val newList = mutableListOf<LedgerEntry>()
+        val newList = mutableListOf<LedgerData>()
         for (day in 1..maxDay) {
             val dateStr = String.format("%04d-%02d-%02d", year, month, day)
             val entriesForDay = grouped[day]
             if (entriesForDay.isNullOrEmpty()) {
                 // 기록이 없는 날짜: dummy 항목, date는 유지, 나머지는 "-"
-                newList.add(LedgerEntry(0, dateStr, "-", "-", 0, "-", "-"))
+                newList.add(LedgerData(0, dateStr, "-", "-", 0, "-", "-"))
             } else {
                 // 기록이 있는 경우: 첫 항목은 날짜 그대로, 나머지는 날짜를 빈 문자열로 처리
                 entriesForDay.sortBy { it.id } // 원하는 기준으로 정렬

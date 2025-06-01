@@ -10,12 +10,12 @@ import com.example.gnu_android_programming.R
 import java.text.NumberFormat
 import java.util.*
 
-class LedgerAdapter(private var items: List<LedgerEntry> = emptyList()) : RecyclerView.Adapter<LedgerAdapter.LedgerViewHolder>() {
+class LedgerAdapter(private var items: List<LedgerData> = emptyList()) : RecyclerView.Adapter<LedgerAdapter.LedgerViewHolder>() {
 
     // 아이템 클릭 콜백
-    var onItemClick: ((LedgerEntry) -> Unit)? = null
+    var onItemClick: ((LedgerData) -> Unit)? = null
 
-    fun updateData(newItems: List<LedgerEntry>) {
+    fun updateData(newItems: List<LedgerData>) {
         items = newItems
         notifyDataSetChanged()
     }
@@ -46,7 +46,7 @@ class LedgerAdapter(private var items: List<LedgerEntry> = emptyList()) : Recycl
         private val tvPaymentMethod: TextView = itemView.findViewById(R.id.tvPaymentMethod)
         private val tvMemo: TextView = itemView.findViewById(R.id.tvMemo)
 
-        fun bind(entry: LedgerEntry) {
+        fun bind(entry: LedgerData) {
             // 날짜: 만약 dummy 항목이면 그대로, 아니면 "yyyy-MM-dd"에서 일(day)만 추출해 "일" 붙이기
             if (entry.incomeExpense == "-") {
                 tvDate.text = entry.date.takeLast(2) + "일"

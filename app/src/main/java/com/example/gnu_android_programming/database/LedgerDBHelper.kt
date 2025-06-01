@@ -4,7 +4,7 @@ import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
-import com.example.gnu_android_programming.home.list.LedgerEntry
+import com.example.gnu_android_programming.home.list.LedgerData
 import org.json.JSONArray
 import org.json.JSONObject
 
@@ -44,7 +44,7 @@ class LedgerDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
     }
 
     // 데이터 삽입 함수
-    fun insertEntry(entry: LedgerEntry): Long {
+    fun insertEntry(entry: LedgerData): Long {
         val db = writableDatabase
         val values = ContentValues().apply {
             put(COL_DATE, entry.date)
@@ -112,7 +112,7 @@ class LedgerDBHelper(context: Context) : SQLiteOpenHelper(context, DATABASE_NAME
         return Pair(revenue, expense)
     }
 
-    fun updateEntry(entry: LedgerEntry): Int {
+    fun updateEntry(entry: LedgerData): Int {
         val db = writableDatabase
         val values = ContentValues().apply {
             put(COL_DATE, entry.date)

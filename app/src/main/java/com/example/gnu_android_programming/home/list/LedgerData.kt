@@ -1,6 +1,6 @@
 package com.example.gnu_android_programming.home.list
 
-data class LedgerEntry(
+data class LedgerData(
     val id: Long = 0,
     val date: String,         // 형식: "yyyy-MM-dd"
     val incomeExpense: String, // "수익" 또는 "지출"
