@@ -1,5 +1,7 @@
 package com.example.gnu_android_programming.home.list
 
+import java.io.Serializable
+
 data class LedgerData(
     val id: Long = 0,
     val date: String,         // 형식: "yyyy-MM-dd"
@@ -8,4 +10,4 @@ data class LedgerData(
     val amount: Int,
     val paymentMethod: String, // "카드" 또는 "현금"
     val memo: String
-)
+): Serializable
