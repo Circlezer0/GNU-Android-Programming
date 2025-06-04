@@ -1,6 +1,230 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/reservation_list_root"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF">
 
+    <!-- 상단: 이전달 / 년월 표시 / 다음달 -->
+    <LinearLayout
+        android:id="@+id/header_month_nav"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical|center_horizontal"
+        android:background="@color/white"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp">
+
+        <Button
+            android:id="@+id/btnPrevMonth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이전달"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@android:color/white"/>
+
+        <TextView
+            android:id="@+id/tvMonthYear"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="2025년 05월"
+            android:textSize="18sp"
+            android:gravity="center"/>
+
+        <Button
+            android:id="@+id/btnNextMonth"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="다음달"
+            android:backgroundTint="@color/colorPrimary"
+            android:textColor="@android:color/white"/>
+    </LinearLayout>
+
+    <!-- 제목 -->
+    <TextView
+        android:id="@+id/tvReservationTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="예약 목록"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center_vertical|center_horizontal"
+        android:padding="12dp"
+        android:background="@color/colorPrimaryLight"/>
+
+    <!-- 예약 목록을 감싸는 ScrollView (필요에 따라 RecyclerView로 바꿔도 무방합니다) -->
+    <ScrollView
+        android:id="@+id/scroll_reservation_list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:id="@+id/container_reservations"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="8dp">
+
+            <!-- 예시: 각 예약 항목을 LinearLayout으로 하나씩 배치합니다.
+                 실제로는 RecyclerView를 사용하여 Adapter에서 뷰바인딩/확장/접기 로직을 구현하는 것이 더 효율적입니다.
+                 여기서는 샘플 4개의 예약을 하드코딩 형태로 배치해 보았습니다. -->
+
+            <!-- ─── 예약 아이템 예시 ─── -->
+            <LinearLayout
+                android:id="@+id/item_reservation_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp"
+                >
+
+                <!-- 상단: 고객명 / 날짜시간 / 타입 -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/tvCustomerName1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="홍길동"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/tvResDateTime1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="2025-05-21 17:50 배달"
+                        android:textSize="14sp"
+                        android:gravity="center_horizontal"/>
+
+                    <!-- 펼침/접힘 토글 아이콘 -->
+                    <ImageView
+                        android:id="@+id/ivToggle1"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_arrow_drop_down"
+                        android:contentDescription="펼침/접힘"
+                        android:padding="2dp"/>
+                </LinearLayout>
+
+                <!-- 접혔을 때는 visibility="gone" 으로, 펼칠 때 visible로 전환 -->
+                <LinearLayout
+                    android:id="@+id/expanded_area1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:paddingTop="4dp">
+
+                    <TextView
+                        android:id="@+id/tvAddress1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="장소 창원시 의창구 포레나대원 123동"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:id="@+id/tvContact1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Tel. 010-1234-5678"
+                        android:textSize="14sp"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ─── 실제 구현 시에는 아래 항목들이 Adapter로 동적으로 반복 생성됩니다. ─── -->
+            <!-- 여기서는 샘플 4개 항목만 임시 배치한 것일 뿐, 실제는 RecyclerView를 권장. -->
+            <LinearLayout
+                android:id="@+id/item_reservation_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp"
+                >
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/tvCustomerName2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="홍길동"
+                        android:textSize="16sp"
+                        android:textStyle="bold"/>
+
+                    <TextView
+                        android:id="@+id/tvResDateTime2"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="2025-05-21 17:50 배달"
+                        android:textSize="14sp"
+                        android:gravity="center_horizontal"/>
+
+                    <ImageView
+                        android:id="@+id/ivToggle2"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_arrow_drop_down"
+                        android:contentDescription="펼침/접힘"
+                        android:padding="2dp"/>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/expanded_area2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:paddingTop="4dp">
+
+                    <TextView
+                        android:id="@+id/tvAddress2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="장소 창원시 의창구 포레나대원 123동"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:id="@+id/tvContact2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Tel. 010-1234-5678"
+                        android:textSize="14sp"
+                        android:layout_marginTop="4dp"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- (샘플 3,4번 항목도 동일 형식으로 배치) -->
+            <!-- … -->
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- 하단: “+” 버튼-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fabAddReservation"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_input_add"
+            android:backgroundTint="@color/colorSecondary"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="16dp"/>
+    </FrameLayout>
 </LinearLayout>

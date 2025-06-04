@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/add_scroll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:id="@+id/add_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- 1) 고객명 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="고객명"
+            android:textSize="16sp"/>
+
+        <EditText
+            android:id="@+id/etCustomerName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="홍길동"
+            android:inputType="textPersonName"/>
+
+        <!-- 2) 고객 연락처 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="고객 연락처"
+            android:textSize="16sp"
+            android:layout_marginTop="12dp"/>
+
+        <EditText
+            android:id="@+id/etCustomerContact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="010-1234-5678"
+            android:inputType="phone"/>
+
+        <!-- 3) 예약 날짜 (yyyy-mm-dd hh:mm) -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="예약 날짜 (yyyy-mm-dd hh:mm)"
+            android:textSize="16sp"
+            android:layout_marginTop="12dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <EditText
+                android:id="@+id/etReservationDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="2025-05-21 14:30"
+                android:inputType="none"
+                android:focusable="false"/>
+
+            <ImageButton
+                android:id="@+id/btnPickResDate"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_calendar"
+                android:contentDescription="예약 날짜 선택"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
+        </LinearLayout>
+
+        <!-- 4) 거래 날짜 (yyyy-mm-dd hh:mm) -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="거래 날짜 (yyyy-mm-dd hh:mm)"
+            android:textSize="16sp"
+            android:layout_marginTop="12dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <EditText
+                android:id="@+id/etTransactionDate"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="2025-05-21 17:50"
+                android:inputType="none"
+                android:focusable="false"/>
+
+            <ImageButton
+                android:id="@+id/btnPickTransDate"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_calendar"
+                android:contentDescription="거래 날짜 선택"
+                android:background="?attr/selectableItemBackgroundBorderless"/>
+        </LinearLayout>
+
+        <!-- 5) 예약 유형 (Radio: 픽업 / 배달) -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="예약 유형"
+            android:textSize="16sp"
+            android:layout_marginTop="12dp"/>
+
+        <RadioGroup
+            android:id="@+id/radioGroupResType"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radioPickup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="픽업"
+                android:textSize="16sp"
+                android:layout_marginEnd="16dp"/>
+
+            <RadioButton
+                android:id="@+id/radioDelivery"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="배달"
+                android:textSize="16sp"/>
+        </RadioGroup>
+
+        <!-- 6) 거래 장소 -->
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="거래 장소"
+            android:textSize="16sp"
+            android:layout_marginTop="12dp"/>
+
+        <EditText
+            android:id="@+id/etTransactionLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="창원시 의창구 포레나대원 123동"
+            android:inputType="textPostalAddress"/>
+
+        <!-- 7) 예약 항목 리스트(동적으로 추가/삭제 가능하도록) -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            >
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="예약 항목 리스트"
+                android:textSize="16sp"
+                android:layout_marginTop="12dp"/>
+            <!-- “항목 추가” 버튼 -->
+            <Button
+                android:id="@+id/btnAddItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="항목 추가"
+                android:backgroundTint="@color/colorPrimary"
+                android:textColor="@android:color/white"
+                android:layout_marginTop="8dp"/>
+        </LinearLayout>
+
+        <!-- 항목이 많아지면 스크롤이 필요하므로, 내부에 또 ScrollView (내부 스크롤) 또는 RecyclerView 권장 -->
+        <LinearLayout
+            android:id="@+id/item_list_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/item_divider"
+            android:padding="8dp">
+
+            <!-- 예시로 첫 번째 항목 하나만 배치 -->
+            <LinearLayout
+                android:id="@+id/res_item_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="8dp"
+                android:background="@drawable/item_divider_bottom">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="항목 1"
+                    android:textStyle="bold"
+                    android:textSize="14sp"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="상품명"
+                        android:textSize="14sp"/>
+
+                    <EditText
+                        android:id="@+id/etItemName1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:hint="상품명"
+                        android:inputType="text"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="가격"
+                        android:textSize="14sp"/>
+
+                    <EditText
+                        android:id="@+id/etItemPrice1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:hint="0"
+                        android:inputType="number"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="카테고리"
+                        android:textSize="14sp"/>
+
+                    <Spinner
+                        android:id="@+id/spinnerCategory1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:popupBackground="@android:color/white"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginTop="4dp">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="비고 (메모용)"
+                        android:textSize="14sp"/>
+
+                    <EditText
+                        android:id="@+id/etItemMemo1"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="2"
+                        android:hint="메모를 입력하세요."
+                        android:inputType="text"/>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- 8) 총 금액 -->
+        <TextView
+            android:id="@+id/tvTotalAmountLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="총 금액"
+            android:textSize="16sp"
+            android:layout_marginTop="12dp"/>
+
+        <TextView
+            android:id="@+id/tvTotalAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:textSize="16sp"
+            android:layout_marginTop="4dp"/>
+
+        <!-- 9) 푸시 알림 설정 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginTop="12dp">
+
+            <CheckBox
+                android:id="@+id/cbPushAlert"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="푸시 알림"/>
+        </LinearLayout>
+
+        <RadioGroup
+            android:id="@+id/radioGroupPushTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:layout_marginTop="4dp">
+
+            <RadioButton
+                android:id="@+id/radio5Min"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5분 전"/>
+
+            <RadioButton
+                android:id="@+id/radio15Min"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="15분 전"/>
+
+            <RadioButton
+                android:id="@+id/radio30Min"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="30분 전"/>
+
+            <RadioButton
+                android:id="@+id/radio1Hour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1시간 전"/>
+
+            <RadioButton
+                android:id="@+id/radioCustom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="직접 입력"/>
+
+            <!-- 커스텀 입력 (분/시간/일) -->
+            <LinearLayout
+                android:id="@+id/layoutCustomTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:layout_marginTop="4dp">
+
+                <NumberPicker
+                    android:id="@+id/npHours"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="시간"
+                    android:layout_gravity="center_vertical"/>
+
+                <NumberPicker
+                    android:id="@+id/npMinutes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="분"
+                    android:layout_gravity="center_vertical"/>
+            </LinearLayout>
+        </RadioGroup>
+
+        <!-- 10) 저장 버튼 -->
+        <Button
+            android:id="@+id/btnSaveReservation"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:text="저장"
+            android:textColor="@android:color/white"
+            android:backgroundTint="@color/colorPrimary"
+            android:layout_marginTop="16dp"
+            android:textAllCaps="false"/>
+
+    </LinearLayout>
+</ScrollView>

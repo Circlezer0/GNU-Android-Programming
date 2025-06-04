@@ -72,13 +72,13 @@ class HomeFragment : Fragment() {
         btnCalendar.setOnClickListener {
             // 달력 모드: CustomCalendarFragment 사용
             childFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, HomeCalendarFragment.newInstance(getCurrentYearMonth()))
+                .replace(R.id.home_fragment_container, HomeCalendarFragment.newInstance(getCurrentYearMonth()))
                 .commit()
         }
         btnList.setOnClickListener {
             // 리스트 모드: ListFragment 사용
             childFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, HomeListFragment.newInstance(getCurrentYearMonth()))
+                .replace(R.id.home_fragment_container, HomeListFragment.newInstance(getCurrentYearMonth()))
                 .commit()
         }
 
@@ -97,7 +97,7 @@ class HomeFragment : Fragment() {
         // 최초 진입 시 달력 모드로 시작
         if (savedInstanceState == null) {
             childFragmentManager.beginTransaction()
-                .add(R.id.fragment_container, HomeCalendarFragment.newInstance(getCurrentYearMonth()))
+                .add(R.id.home_fragment_container, HomeCalendarFragment.newInstance(getCurrentYearMonth()))
                 .commit()
         }
     }
@@ -127,14 +127,14 @@ class HomeFragment : Fragment() {
 
     // 현재 프래그먼트에 따라 새로고침
     private fun refreshCurrentFragment() {
-        val currentFragment = childFragmentManager.findFragmentById(R.id.fragment_container)
+        val currentFragment = childFragmentManager.findFragmentById(R.id.home_fragment_container)
         val newFragment = when (currentFragment) {
             is HomeCalendarFragment -> HomeCalendarFragment.newInstance(getCurrentYearMonth())
             is HomeListFragment -> HomeListFragment.newInstance(getCurrentYearMonth())
             else -> HomeCalendarFragment.newInstance(getCurrentYearMonth())
         }
         childFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, newFragment)
+            .replace(R.id.home_fragment_container, newFragment)
             .commit()
     }
 

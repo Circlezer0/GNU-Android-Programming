@@ -3,4 +3,9 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="custom_fab_color">#D893C7</color>
+    <color name="colorPrimary">#F48FB1</color>          <!-- 부드러운 핑크 -->
+    <color name="colorPrimaryLight">#F8BBD0</color>      <!-- 연한 핑크 -->
+    <color name="colorPrimaryVariant">#F06292</color>   <!-- 좀 더 진한 핑크 -->
+    <color name="colorSecondary">#D893C7</color>          <!-- 연보라 (Secondary) -->
+    <color name="colorAccent">#D81B60</color>             <!-- 강렬한 핑크 -->
 </resources>

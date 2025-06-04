@@ -131,7 +131,7 @@
 
     <!-- Fragment 컨테이너: 남은 공간을 모두 차지 -->
     <FrameLayout
-        android:id="@+id/fragment_container"
+        android:id="@+id/home_fragment_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1" />
@@ -145,7 +145,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@android:drawable/ic_input_add"
-            app:backgroundTint="#F0C3D8"
+            android:backgroundTint="@color/colorSecondary"
             android:layout_gravity="end|bottom"
             android:layout_margin="16dp"/>
     </FrameLayout>
