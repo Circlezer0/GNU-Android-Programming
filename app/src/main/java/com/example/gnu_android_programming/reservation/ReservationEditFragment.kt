@@ -2,6 +2,7 @@ package com.example.gnu_android_programming.reservation
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,14 +12,26 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.gnu_android_programming.R
+import com.example.gnu_android_programming.cancelReservationAlarm
 import com.example.gnu_android_programming.database.ReservationDBHelper
 import com.example.gnu_android_programming.scheduleReservationAlarm
 import java.text.SimpleDateFormat
 import java.util.*
 
-class ReservationAddFragment : Fragment() {
+class ReservationEditFragment : Fragment() {
 
-    // 1) 뷰 바인딩 변수
+    companion object {
+        private const val ARG_RES = "arg_reservation"
+        fun newInstance(res: ReservationData): ReservationEditFragment =
+            ReservationEditFragment().apply {
+                arguments = Bundle().apply { putSerializable(ARG_RES, res) }
+            }
+    }
+
+    private lateinit var dbHelper: ReservationDBHelper
+    private lateinit var reservation: ReservationData
+
+    // 뷰 바인딩
     private lateinit var etCustomerName: EditText
     private lateinit var etCustomerContact: EditText
     private lateinit var etReservationDate: EditText
@@ -29,8 +42,8 @@ class ReservationAddFragment : Fragment() {
     private lateinit var radioPickup: RadioButton
     private lateinit var radioDelivery: RadioButton
     private lateinit var etTransactionLocation: EditText
-    private lateinit var btnAddItem: Button
     private lateinit var itemListContainer: LinearLayout
+    private lateinit var btnAddItem: Button
     private lateinit var tvTotalAmount: TextView
     private lateinit var cbPushAlert: CheckBox
     private lateinit var radioGroupPushTime: RadioGroup
@@ -42,22 +55,23 @@ class ReservationAddFragment : Fragment() {
     private lateinit var layoutCustomTime: LinearLayout
     private lateinit var npHours: NumberPicker
     private lateinit var npMinutes: NumberPicker
-    private lateinit var btnSaveReservation: Button
+    private lateinit var btnSave: Button
 
-    // 2) DB 헬퍼
-    private lateinit var dbHelper: ReservationDBHelper
+    private val categories = arrayOf("식물","화분","분갈이")
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? = inflater.inflate(R.layout.fragment_reservation_add, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        reservation = requireArguments().getSerializable(ARG_RES) as ReservationData
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
+        inflater.inflate(R.layout.fragment_reservation_add, container, false)
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         dbHelper = ReservationDBHelper(requireContext())
 
-        // --- 뷰 바인딩 ---
+        // 1) 바인딩
         etCustomerName       = view.findViewById(R.id.etCustomerName)
         etCustomerContact    = view.findViewById(R.id.etCustomerContact)
         etReservationDate    = view.findViewById(R.id.etReservationDate)
@@ -68,8 +82,8 @@ class ReservationAddFragment : Fragment() {
         radioPickup          = view.findViewById(R.id.radioPickup)
         radioDelivery        = view.findViewById(R.id.radioDelivery)
         etTransactionLocation= view.findViewById(R.id.etTransactionLocation)
-        btnAddItem           = view.findViewById(R.id.btnAddItem)
         itemListContainer    = view.findViewById(R.id.item_list_container)
+        btnAddItem           = view.findViewById(R.id.btnAddItem)
         tvTotalAmount        = view.findViewById(R.id.tvTotalAmount)
         cbPushAlert          = view.findViewById(R.id.cbPushAlert)
         radioGroupPushTime   = view.findViewById(R.id.radioGroupPushTime)
@@ -81,40 +95,75 @@ class ReservationAddFragment : Fragment() {
         layoutCustomTime     = view.findViewById(R.id.layoutCustomTime)
         npHours              = view.findViewById(R.id.npHours)
         npMinutes            = view.findViewById(R.id.npMinutes)
-        btnSaveReservation   = view.findViewById(R.id.btnSaveReservation)
+        btnSave              = view.findViewById(R.id.btnSaveReservation)
 
-        // --- 초기 설정 ---
-        val now = Calendar.getInstance()
-        val fmt = SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.getDefault())
-        etReservationDate.setText(fmt.format(now.time))
-        val tomorrow = Calendar.getInstance().apply { add(Calendar.DAY_OF_MONTH, 1) }
-        etTransactionDate.setText(fmt.format(tomorrow.time))
-
-        radioPickup.isChecked = true
-        npHours.minValue   = 0;  npHours.maxValue   = 23; npHours.wrapSelectorWheel   = true
-        npMinutes.minValue = 0;  npMinutes.maxValue = 59; npMinutes.wrapSelectorWheel = true
-
-        // --- 리스너 등록 ---
+        // 2) 리스너 등록
         btnPickResDate.setOnClickListener    { pickDateTime(etReservationDate) }
         btnPickTransDate.setOnClickListener  { pickDateTime(etTransactionDate) }
-
-        btnAddItem.setOnClickListener        { addNewItemView() }
-
         cbPushAlert.setOnCheckedChangeListener { _, checked ->
+            // 체크 시 라디오 그룹 보이기, 첫번째 기본 선택
             radioGroupPushTime.visibility = if (checked) View.VISIBLE else View.GONE
-            if (checked) {
-                // 푸시 체크 시 항상 첫번째(5분 전) 선택
-                radio5Min.isChecked = true
-            }
+            if (checked) radio5Min.isChecked = true
         }
         radioGroupPushTime.setOnCheckedChangeListener { _, id ->
             layoutCustomTime.visibility = if (id == R.id.radioCustom) View.VISIBLE else View.GONE
         }
+        btnAddItem.setOnClickListener        { addNewItemView() }
 
-        btnSaveReservation.setOnClickListener { saveReservation() }
+        // 3) 기본값 및 전달된 데이터로 초기화
+        etCustomerName.setText(reservation.customerName)
+        etCustomerContact.setText(reservation.customerContact)
+        etReservationDate.setText(reservation.reservationDateTime)
+        etTransactionDate.setText(reservation.transactionDateTime)
+        if (reservation.reservationType == "픽업") radioPickup.isChecked = true
+        else radioDelivery.isChecked = true
+        etTransactionLocation.setText(reservation.transactionLocation)
+
+        // NumberPicker 범위
+        npHours.minValue = 0; npHours.maxValue = 23
+        npMinutes.minValue = 0; npMinutes.maxValue = 59
+
+        // 아이템 리스트
+        itemListContainer.removeAllViews()
+        reservation.items.forEach { addNewItemView(it) }
+        updateTotalAmount()
+
+        // 푸시 설정
+        if (reservation.pushSetting != null) {
+            cbPushAlert.isChecked = true
+            radioGroupPushTime.visibility = View.VISIBLE
+            val min = reservation.pushSetting!!.relativeMin
+            val h = min / 60; val m = min % 60
+            when {
+                min == 5   -> radio5Min.isChecked = true
+                min == 15  -> radio15Min.isChecked = true
+                min == 30  -> radio30Min.isChecked = true
+                min == 60  -> radio1Hour.isChecked = true
+                else       -> {
+                    radioCustom.isChecked = true
+                    layoutCustomTime.visibility = View.VISIBLE
+                    npHours.value   = h
+                    npMinutes.value = m
+                }
+            }
+        } else {
+            cbPushAlert.isChecked = false
+            radioGroupPushTime.visibility = View.GONE
+            layoutCustomTime.visibility  = View.GONE
+        }
+
+        // 4) 저장 버튼
+        btnSave.setOnClickListener {
+            collectInputsInto(reservation)
+            cancelReservationAlarm(requireContext(), reservation.id!!)
+            dbHelper.updateReservation(reservation)
+            if (reservation.pushSetting != null) {
+                scheduleReservationAlarm(requireContext(), reservation)
+            }
+            parentFragmentManager.popBackStack()
+        }
     }
 
-    /** 날짜+시간 픽커 띄우기 */
     private fun pickDateTime(target: EditText) {
         val now = Calendar.getInstance()
         DatePickerDialog(requireContext(),
@@ -133,52 +182,58 @@ class ReservationAddFragment : Fragment() {
         ).show()
     }
 
-    /** 한 줄짜리 예약 항목 뷰 생성 */
-    private fun addNewItemView() {
+    private fun addNewItemView(prefill: ReservationItemData? = null) {
         val itemView = LayoutInflater.from(requireContext())
             .inflate(R.layout.item_reservation_add_item, itemListContainer, false)
 
-        // 삭제 버튼
         itemView.findViewById<TextView>(R.id.tvDeleteItem).setOnClickListener {
             itemListContainer.removeView(itemView)
             updateTotalAmount()
         }
-
-        // 가격 변경 감지
         itemView.findViewById<EditText>(R.id.etItemPrice)
-            .addTextChangedListener(object : SimpleTextWatcher() {
+            .addTextChangedListener(object: TextWatcher {
+                override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+                override fun afterTextChanged(s: Editable?) {}
                 override fun onTextChanged(s: CharSequence?, st: Int, bf: Int, cnt: Int) {
                     updateTotalAmount()
                 }
             })
 
-        // 카테고리 Spinner 세팅
-        val cats = arrayOf("식물","화분")
-        itemView.findViewById<Spinner>(R.id.spinnerCategory).apply {
-            adapter = ArrayAdapter(requireContext(),
-                android.R.layout.simple_spinner_item, cats
-            ).also { it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
+        val spinner = itemView.findViewById<Spinner>(R.id.spinnerCategory)
+        spinner.adapter = ArrayAdapter(requireContext(),
+            android.R.layout.simple_spinner_item, categories
+        ).also { it.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
+
+        prefill?.let {
+            itemView.findViewById<EditText>(R.id.etItemName).setText(it.itemName)
+            itemView.findViewById<EditText>(R.id.etItemPrice).setText(it.price.toString())
+            spinner.setSelection(categories.indexOf(it.category))
+            itemView.findViewById<EditText>(R.id.etItemMemo).setText(it.memo)
         }
 
         itemListContainer.addView(itemView)
         updateTotalAmount()
     }
 
-    /** 총 금액 합계 갱신 */
     private fun updateTotalAmount() {
         var sum = 0
         for (i in 0 until itemListContainer.childCount) {
-            val child = itemListContainer.getChildAt(i)
-            val price = child.findViewById<EditText>(R.id.etItemPrice)
+            val c = itemListContainer.getChildAt(i)
+            val price = c.findViewById<EditText>(R.id.etItemPrice)
                 .text.toString().toIntOrNull() ?: 0
             sum += price
         }
         tvTotalAmount.text = sum.toString()
     }
 
-    /** 저장 버튼 눌렀을 때 DB에 삽입하고 뒤로 돌아가기 */
-    private fun saveReservation() {
-        // 1) 아이템 리스트 수집
+    private fun collectInputsInto(res: ReservationData) {
+        res.customerName         = etCustomerName.text.toString()
+        res.customerContact      = etCustomerContact.text.toString()
+        res.reservationDateTime  = etReservationDate.text.toString()
+        res.transactionDateTime  = etTransactionDate.text.toString()
+        res.reservationType      = if (radioPickup.isChecked) "픽업" else "배달"
+        res.transactionLocation  = etTransactionLocation.text.toString()
+
         val items = mutableListOf<ReservationItemData>()
         for (i in 0 until itemListContainer.childCount) {
             val c = itemListContainer.getChildAt(i)
@@ -189,46 +244,18 @@ class ReservationAddFragment : Fragment() {
                 memo     = c.findViewById<EditText>(R.id.etItemMemo).text.toString()
             )
         }
+        res.items       = items
+        res.totalAmount = tvTotalAmount.text.toString().toIntOrNull() ?: 0
 
-        // 2) 푸시 알림 시각 결정
         val pushMin = if (cbPushAlert.isChecked) {
             when (radioGroupPushTime.checkedRadioButtonId) {
                 R.id.radio5Min   -> 5
                 R.id.radio15Min  -> 15
                 R.id.radio30Min  -> 30
                 R.id.radio1Hour  -> 60
-                R.id.radioCustom -> npHours.value * 60 + npMinutes.value
-                else             -> null
+                else             -> npHours.value * 60 + npMinutes.value
             }
         } else null
-
-        // 3) DTO 생성
-        val data = ReservationData(
-            customerName      = etCustomerName.text.toString(),
-            customerContact   = etCustomerContact.text.toString(),
-            reservationDateTime   = etReservationDate.text.toString(),
-            transactionDateTime   = etTransactionDate.text.toString(),
-            reservationType   = if (radioPickup.isChecked) "픽업" else "배달",
-            transactionLocation   = etTransactionLocation.text.toString(),
-            items             = items,
-            totalAmount       = tvTotalAmount.text.toString().toInt(),
-            pushSetting       = pushMin?.let { PushSettingData(it) }
-        )
-
-        // 4) DB에 삽입
-        val newId = dbHelper.insertReservation(data)
-        data.id = newId
-
-        // 예약 알림 스케줄링
-        scheduleReservationAlarm(requireContext(), data)
-
-        // 5) 저장 완료 토스트 + 이전 화면으로
-        parentFragmentManager.popBackStack()
-    }
-
-    /** 가격 감지만을 위한 간단 TextWatcher */
-    abstract class SimpleTextWatcher : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-        override fun afterTextChanged(s: Editable?) {}
+        res.pushSetting = pushMin?.let { PushSettingData(it) }
     }
 }

@@ -1,5 +1,7 @@
 package com.example.gnu_android_programming
 
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +11,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import com.example.gnu_android_programming.home.HomeFragment
 import com.example.gnu_android_programming.reservation.ReservationFragment
 import com.google.android.material.navigation.NavigationView
+import android.Manifest
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,6 +23,18 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                requestPermissions(
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    1001
+                )
+            }
+        }
+
 
         drawerLayout = findViewById(R.id.drawer_layout)
         navigationView = findViewById(R.id.nav_view)
