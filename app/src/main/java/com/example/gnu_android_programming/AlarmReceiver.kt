@@ -1,5 +1,6 @@
 package com.example.gnu_android_programming
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.BroadcastReceiver
@@ -16,6 +17,7 @@ class AlarmReceiver : BroadcastReceiver() {
         private const val CHANNEL_NAME = "예약 알람"
     }
 
+    @SuppressLint("MissingPermission")
     override fun onReceive(context: Context, intent: Intent) {
         val resId = intent.getLongExtra("reservationId", -1L)
         if (resId == -1L) return

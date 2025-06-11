@@ -153,7 +153,7 @@ class ReservationAddFragment : Fragment() {
             })
 
         // 카테고리 Spinner 세팅
-        val cats = arrayOf("식물","화분")
+        val cats = arrayOf("식물","화분","분갈이","토분")
         itemView.findViewById<Spinner>(R.id.spinnerCategory).apply {
             adapter = ArrayAdapter(requireContext(),
                 android.R.layout.simple_spinner_item, cats

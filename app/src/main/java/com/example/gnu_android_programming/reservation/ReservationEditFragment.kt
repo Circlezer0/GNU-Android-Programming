@@ -57,7 +57,7 @@ class ReservationEditFragment : Fragment() {
     private lateinit var npMinutes: NumberPicker
     private lateinit var btnSave: Button
 
-    private val categories = arrayOf("식물","화분","분갈이")
+    private val categories = arrayOf("식물","화분","분갈이","토분")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
