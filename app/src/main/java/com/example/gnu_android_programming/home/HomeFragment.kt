@@ -8,7 +8,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.gnu_android_programming.R
-import com.example.gnu_android_programming.database.LedgerDBHelper
+import com.example.gnu_android_programming.database.LedgerDao
 import com.example.gnu_android_programming.home.calendar.HomeCalendarFragment
 import com.example.gnu_android_programming.home.list.HomeListFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -19,7 +19,7 @@ import java.util.Locale
 
 class HomeFragment : Fragment() {
 
-    private lateinit var ledgerDBHelper: LedgerDBHelper
+    private lateinit var ledgerDao: LedgerDao
     private lateinit var tvMonthYear: TextView
     private lateinit var tvIncome: TextView
     private lateinit var tvExpense: TextView
@@ -43,7 +43,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        ledgerDBHelper = LedgerDBHelper(requireContext())
+        ledgerDao = LedgerDao(requireContext())
 
         // 헤더 컨트롤 초기화
         tvMonthYear = view.findViewById(R.id.tvMonthYear)
@@ -108,7 +108,7 @@ class HomeFragment : Fragment() {
         tvMonthYear.text = yearMonth
 
         // DB에서 월간 통계 불러오기
-        val (income, expense, net) = ledgerDBHelper.getMonthlySummary(yearMonth)
+        val (income, expense, net) = ledgerDao.getMonthlySummary(yearMonth)
 
         // NumberFormat을 사용해 3자리마다 쉼표 붙이기
         val formattedIncome = NumberFormat.getNumberInstance(Locale.getDefault()).format(income)

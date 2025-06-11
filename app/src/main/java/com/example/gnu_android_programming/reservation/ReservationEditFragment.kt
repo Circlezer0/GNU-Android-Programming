@@ -2,7 +2,6 @@ package com.example.gnu_android_programming.reservation
 
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,7 +12,7 @@ import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.gnu_android_programming.R
 import com.example.gnu_android_programming.cancelReservationAlarm
-import com.example.gnu_android_programming.database.ReservationDBHelper
+import com.example.gnu_android_programming.database.ReservationDao
 import com.example.gnu_android_programming.scheduleReservationAlarm
 import java.text.SimpleDateFormat
 import java.util.*
@@ -28,7 +27,7 @@ class ReservationEditFragment : Fragment() {
             }
     }
 
-    private lateinit var dbHelper: ReservationDBHelper
+    private lateinit var reservationDao: ReservationDao
     private lateinit var reservation: ReservationData
 
     // 뷰 바인딩
@@ -69,7 +68,7 @@ class ReservationEditFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dbHelper = ReservationDBHelper(requireContext())
+        reservationDao = ReservationDao(requireContext())
 
         // 1) 바인딩
         etCustomerName       = view.findViewById(R.id.etCustomerName)
@@ -156,7 +155,7 @@ class ReservationEditFragment : Fragment() {
         btnSave.setOnClickListener {
             collectInputsInto(reservation)
             cancelReservationAlarm(requireContext(), reservation.id!!)
-            dbHelper.updateReservation(reservation)
+            reservationDao.update(reservation)
             if (reservation.pushSetting != null) {
                 scheduleReservationAlarm(requireContext(), reservation)
             }

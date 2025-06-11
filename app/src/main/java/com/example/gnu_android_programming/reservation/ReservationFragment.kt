@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.example.gnu_android_programming.R
 import com.example.gnu_android_programming.cancelReservationAlarm
-import com.example.gnu_android_programming.database.ReservationDBHelper
+import com.example.gnu_android_programming.database.ReservationDao
 import java.util.*
 
 class ReservationFragment : Fragment() {
@@ -24,7 +24,7 @@ class ReservationFragment : Fragment() {
     private lateinit var fabAddReservation: FloatingActionButton
     private lateinit var rv: RecyclerView
     private lateinit var adapter: ReservationAdapter
-    private lateinit var dbHelper: ReservationDBHelper
+    private lateinit var reservationDao: ReservationDao
 
     private val current = Calendar.getInstance()
 
@@ -34,7 +34,7 @@ class ReservationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        dbHelper = ReservationDBHelper(requireContext())
+        reservationDao = ReservationDao(requireContext())
 
         btnPrevMonth      = view.findViewById(R.id.btnPrevMonth)
         btnNextMonth      = view.findViewById(R.id.btnNextMonth)
@@ -53,7 +53,7 @@ class ReservationFragment : Fragment() {
                 }
                 override fun onDelete(res: ReservationData) {
                     cancelReservationAlarm(requireContext(), res.id!!)
-                    dbHelper.deleteReservation(res.id ?: return)
+                    reservationDao.delete(res.id ?: return)
                     refreshList()
                 }
             }
@@ -81,6 +81,6 @@ class ReservationFragment : Fragment() {
         val year  = current.get(Calendar.YEAR)
         val month = current.get(Calendar.MONTH)+1
         tvMonthYear.text = "${year}년 ${"%02d".format(month)}월"
-        adapter.replace(dbHelper.getReservationsOfMonth(year, current.get(Calendar.MONTH)))
+        adapter.replace(reservationDao.getOfMonth(year, current.get(Calendar.MONTH)))
     }
 }

@@ -8,7 +8,7 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.example.gnu_android_programming.database.ReservationDBHelper
+import com.example.gnu_android_programming.database.ReservationDao
 import com.example.gnu_android_programming.reservation.PushSettingData
 
 class AlarmReceiver : BroadcastReceiver() {
@@ -22,8 +22,8 @@ class AlarmReceiver : BroadcastReceiver() {
         val resId = intent.getLongExtra("reservationId", -1L)
         if (resId == -1L) return
 
-        val db = ReservationDBHelper(context)
-        val reservation = db.getReservationById(resId) ?: return
+        val db = ReservationDao(context)
+        val reservation = db.getById(resId) ?: return
 
         // 1) 채널 생성 (앱 최초 실행 시 한 번만 해도 좋습니다)
         val nm = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

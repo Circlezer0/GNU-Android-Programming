@@ -12,6 +12,8 @@ import com.example.gnu_android_programming.home.HomeFragment
 import com.example.gnu_android_programming.reservation.ReservationFragment
 import com.google.android.material.navigation.NavigationView
 import android.Manifest
+import android.database.sqlite.SQLiteDatabase
+import com.example.gnu_android_programming.database.AppDatabaseHelper
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,6 +21,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var navigationView: NavigationView
     private lateinit var toolbar: Toolbar
     private lateinit var toggle: ActionBarDrawerToggle
+
+    private lateinit var dbHelper: AppDatabaseHelper
+    private lateinit var db: SQLiteDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,6 +39,11 @@ class MainActivity : AppCompatActivity() {
                 )
             }
         }
+
+        // DB 헬퍼 초기화
+        dbHelper = AppDatabaseHelper(this)
+        // 여기서 onCreate/onUpgrade 가 호출되어 테이블이 모두 준비됨
+        db = dbHelper.writableDatabase
 
 
         drawerLayout = findViewById(R.id.drawer_layout)

@@ -6,12 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
-import com.example.gnu_android_programming.database.LedgerDBHelper
+import com.example.gnu_android_programming.database.LedgerDao
 
 class SettingFragment : Fragment() {
 
     // DB Helper 초기화용
-    private lateinit var ledgerDBHelper: LedgerDBHelper
+    private lateinit var ledgerDao: LedgerDao
 
     // 뷰 참조용 변수
     private lateinit var radioGroupNotification: RadioGroup
@@ -35,7 +35,7 @@ class SettingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        ledgerDBHelper = LedgerDBHelper(requireContext())
+        ledgerDao = LedgerDao(requireContext())
 
         // 1) “알림 관리” 섹션 바인딩
         radioGroupNotification = view.findViewById(R.id.radioGroupNotification)

@@ -8,7 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.gnu_android_programming.R
-import com.example.gnu_android_programming.database.LedgerDBHelper
+import com.example.gnu_android_programming.database.LedgerDao
 import java.util.*
 
 class HomeCalendarFragment : Fragment() {
@@ -67,10 +67,10 @@ class HomeCalendarFragment : Fragment() {
             list.add(DayData(0))
         }
         // 1일부터 해당 월의 마지막 날까지 데이터 추가 (DB에서 수익/지출 조회)
-        val ledgerDBHelper = LedgerDBHelper(requireContext())
+        val ledgerDao = LedgerDao(requireContext())
         for (day in 1..daysInMonth) {
             val dateStr = String.format("%04d-%02d-%02d", year, month, day)
-            val (revenue, expense) = ledgerDBHelper.getDailySummary(dateStr)
+            val (revenue, expense) = ledgerDao.getDailySummary(dateStr)
             list.add(DayData(day, revenue, expense))
         }
         // 마지막 주 채우기 위해 뒤쪽 빈 셀 추가

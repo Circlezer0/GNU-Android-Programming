@@ -11,14 +11,14 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.gnu_android_programming.R
-import com.example.gnu_android_programming.database.LedgerDBHelper
+import com.example.gnu_android_programming.database.LedgerDao
 import com.example.gnu_android_programming.home.list.LedgerData
 import java.text.SimpleDateFormat
 import java.util.*
 
 class AddEntryFragment : Fragment() {
 
-    private lateinit var ledgerDBHelper: LedgerDBHelper
+    private lateinit var ledgerDao: LedgerDao
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,7 +34,7 @@ class AddEntryFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // DB Helper 초기화
-        ledgerDBHelper = LedgerDBHelper(requireContext())
+        ledgerDao = LedgerDao(requireContext())
 
         // 뷰 참조
         val etDate = view.findViewById<EditText>(R.id.etDate)
@@ -166,7 +166,7 @@ class AddEntryFragment : Fragment() {
             )
 
             // DB에 삽입
-            ledgerDBHelper.insertEntry(entry)
+            ledgerDao.insert(entry)
 
             Toast.makeText(requireContext(), "데이터가 저장되었습니다.", Toast.LENGTH_SHORT).show()
 

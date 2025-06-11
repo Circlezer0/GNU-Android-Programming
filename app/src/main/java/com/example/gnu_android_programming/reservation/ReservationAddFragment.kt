@@ -11,7 +11,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.fragment.app.Fragment
 import com.example.gnu_android_programming.R
-import com.example.gnu_android_programming.database.ReservationDBHelper
+import com.example.gnu_android_programming.database.ReservationDao
 import com.example.gnu_android_programming.scheduleReservationAlarm
 import java.text.SimpleDateFormat
 import java.util.*
@@ -45,7 +45,7 @@ class ReservationAddFragment : Fragment() {
     private lateinit var btnSaveReservation: Button
 
     // 2) DB 헬퍼
-    private lateinit var dbHelper: ReservationDBHelper
+    private lateinit var reservationDao: ReservationDao
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -55,7 +55,7 @@ class ReservationAddFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        dbHelper = ReservationDBHelper(requireContext())
+        reservationDao = ReservationDao(requireContext())
 
         // --- 뷰 바인딩 ---
         etCustomerName       = view.findViewById(R.id.etCustomerName)
@@ -216,7 +216,7 @@ class ReservationAddFragment : Fragment() {
         )
 
         // 4) DB에 삽입
-        val newId = dbHelper.insertReservation(data)
+        val newId = reservationDao.insert(data)
         data.id = newId
 
         // 예약 알림 스케줄링

@@ -10,7 +10,7 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.gnu_android_programming.R
-import com.example.gnu_android_programming.database.LedgerDBHelper
+import com.example.gnu_android_programming.database.LedgerDao
 import com.example.gnu_android_programming.home.list.LedgerData
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -29,7 +29,7 @@ class EditEntryDialogFragment : DialogFragment() {
     private lateinit var entry: LedgerData
 
     // DB Helper
-    private lateinit var ledgerDBHelper: LedgerDBHelper
+    private lateinit var ledgerDao: LedgerDao
 
     // 레이아웃 뷰 참조용
     private lateinit var etDate: EditText
@@ -82,7 +82,7 @@ class EditEntryDialogFragment : DialogFragment() {
         val inflater = LayoutInflater.from(requireContext())
         val rootView = inflater.inflate(R.layout.dialog_edit_entry, null)
 
-        ledgerDBHelper = LedgerDBHelper(requireContext())
+        ledgerDao = LedgerDao(requireContext())
 
         // 뷰 바인딩
         etDate = rootView.findViewById(R.id.etDate)
@@ -208,14 +208,14 @@ class EditEntryDialogFragment : DialogFragment() {
             )
 
             // DB 업데이트
-            ledgerDBHelper.updateEntry(updatedEntry)
+            ledgerDao.update(updatedEntry)
             listener?.onEntryUpdated()
             dialog?.dismiss()
         }
 
         // 4) [삭제] 버튼 클릭 리스너
         btnDelete.setOnClickListener {
-            ledgerDBHelper.deleteEntry(entry.id)
+            ledgerDao.delete(entry.id)
             listener?.onEntryDeleted()
             dialog?.dismiss()
         }
