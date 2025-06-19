@@ -86,25 +86,5 @@
             android:backgroundTint="@color/colorPrimary"
             android:layout_marginBottom="12dp"
             android:textAllCaps="false"/>
-
-        <Button
-            android:id="@+id/btnExportJsonCloud"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:text="클라우드로 Json 내보내기"
-            android:textColor="@android:color/white"
-            android:backgroundTint="@color/colorPrimary"
-            android:layout_marginBottom="12dp"
-            android:textAllCaps="false"/>
-
-        <Button
-            android:id="@+id/btnImportJsonCloud"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:text="클라우드 Json에서 데이터 불러오기"
-            android:textColor="@android:color/white"
-            android:backgroundTint="@color/colorPrimary"
-            android:textAllCaps="false"/>
-
     </LinearLayout>
 </LinearLayout>

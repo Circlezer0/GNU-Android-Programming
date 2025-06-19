@@ -27,6 +27,15 @@ class LedgerDao(context: Context) {
         const val COL_MEMO     = "memo"
     }
 
+    /** 전체 조회 */
+    fun getAll(): List<LedgerData> = getEntriesByMonth(null)
+
+    /** 전체 삭제 */
+    fun deleteAll() {
+        val db = dbHelper.writableDatabase
+        db.delete(TABLE, null, null)
+    }
+
     /**
      * 주어진 "yyyy-MM" 패턴에 맞는 모든 LedgerData 객체를 반환
      */

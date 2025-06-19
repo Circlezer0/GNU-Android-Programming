@@ -41,6 +41,25 @@ class ReservationDao(context: Context) {
         const val COL_MEMO       = "memo"
     }
 
+    /** 전체 조회 */
+    fun getAll(): List<ReservationData> = getBetween(
+        "0000-01-01 00:00",
+        "9999-12-31 23:59"
+    )
+
+    /** 전체 삭제 (item 포함) */
+    fun deleteAll() {
+        val db = dbHelper.writableDatabase
+        db.beginTransaction()
+        try {
+            db.delete(TABLE_ITEM, null, null)
+            db.delete(TABLE_RES,  null, null)
+            db.setTransactionSuccessful()
+        } finally {
+            db.endTransaction()
+        }
+    }
+
     /** 삽입 **/
     fun insert(res: ReservationData): Long {
         val db = dbHelper.writableDatabase
