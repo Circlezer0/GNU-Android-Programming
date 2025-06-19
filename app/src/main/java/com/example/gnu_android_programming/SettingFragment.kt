@@ -1,5 +1,7 @@
 package com.example.gnu_android_programming
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +26,9 @@ class SettingFragment : Fragment() {
     private lateinit var btnExportJsonCloud: Button
     private lateinit var btnImportJsonCloud: Button
 
+    // prefs
+    private lateinit var prefs: SharedPreferences
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -35,6 +40,9 @@ class SettingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        prefs = requireContext()
+            .getSharedPreferences("app_settings", Context.MODE_PRIVATE)
+
         ledgerDao = LedgerDao(requireContext())
 
         // 1) “알림 관리” 섹션 바인딩
@@ -43,24 +51,32 @@ class SettingFragment : Fragment() {
         radioVibrate = view.findViewById(R.id.radioVibrate)
         radioSound = view.findViewById(R.id.radioSound)
 
-        // 기본 선택값(예: “소리”) 미리 체크
-        radioSound.isChecked = true
+        // 저장된 값으로 초깃값 설정
+        when (prefs.getString("notification_type", "sound")) {
+            "sound"   -> radioSound.isChecked = true
+            "vibrate" -> radioVibrate.isChecked = true
+            "silent"  -> radioMuteAll.isChecked = true
+        }
 
         radioGroupNotification.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                R.id.radioMuteAll -> {
-                    // TODO: 모든 알림 음소거 로직
-                    Toast.makeText(requireContext(), "모든 알림 음소거 선택", Toast.LENGTH_SHORT).show()
-                }
-                R.id.radioVibrate -> {
-                    // TODO: 진동 알림 로직
-                    Toast.makeText(requireContext(), "진동 알림 선택", Toast.LENGTH_SHORT).show()
-                }
-                R.id.radioSound -> {
-                    // TODO: 소리 알림 로직
-                    Toast.makeText(requireContext(), "소리 알림 선택", Toast.LENGTH_SHORT).show()
-                }
+            val type = when (checkedId) {
+                R.id.radioSound   -> "sound"
+                R.id.radioVibrate -> "vibrate"
+                R.id.radioMuteAll -> "silent"
+                else              -> "sound"
             }
+            prefs.edit()
+                .putString("notification_type", type)
+                .apply()
+            Toast.makeText(requireContext(),
+                when(type) {
+                    "sound"   -> "소리 알림 선택"
+                    "vibrate" -> "진동 알림 선택"
+                    "silent"  -> "무음 알림 선택"
+                    else      -> ""
+                },
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
         // 2) “데이터 관리” 버튼 바인딩

@@ -12,7 +12,11 @@ import com.example.gnu_android_programming.home.HomeFragment
 import com.example.gnu_android_programming.reservation.ReservationFragment
 import com.google.android.material.navigation.NavigationView
 import android.Manifest
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.database.sqlite.SQLiteDatabase
+import androidx.annotation.RequiresApi
 import com.example.gnu_android_programming.database.AppDatabaseHelper
 
 class MainActivity : AppCompatActivity() {
@@ -84,6 +88,8 @@ class MainActivity : AppCompatActivity() {
                 .commit()
             navigationView.setCheckedItem(R.id.nav_home)
         }
+
+        createNotificationChannels()
     }
 
     // 뒤로가기(Back) 버튼 눌렀을 때 Drawer 열려 있으면 닫기
@@ -93,5 +99,49 @@ class MainActivity : AppCompatActivity() {
         } else {
             super.onBackPressed()
         }
+    }
+
+    private fun createNotificationChannels() {
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+            // Android O 이전 버전에서는 채널을 만들 필요 없음
+            return
+        }
+
+        val nm = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        // 소리 채널
+        val soundChannel = NotificationChannel(
+            "channel_sound",
+            "소리 알림",
+            NotificationManager.IMPORTANCE_HIGH
+        ).apply {
+            description = "소리와 진동이 모두 동작"
+            enableVibration(true)
+        }
+        nm.createNotificationChannel(soundChannel)
+
+        // 진동만 채널
+        val vibrateChannel = NotificationChannel(
+            "channel_vibrate",
+            "진동 전용 알림",
+            NotificationManager.IMPORTANCE_HIGH
+        ).apply {
+            description = "진동만 발생"
+            enableVibration(true)
+            setSound(null, null)
+        }
+        nm.createNotificationChannel(vibrateChannel)
+
+        // 무음 채널
+        val silentChannel = NotificationChannel(
+            "channel_silent",
+            "무음 알림",
+            NotificationManager.IMPORTANCE_LOW
+        ).apply {
+            description = "소리/진동 모두 없음"
+            enableVibration(false)
+            setSound(null, null)
+        }
+        nm.createNotificationChannel(silentChannel)
     }
 }
